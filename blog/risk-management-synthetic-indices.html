@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Risk Management for Deriv Synthetic Indices — Lot Size, Stop Loss &amp; Rules</title>
+    <meta name="description" content="Simple risk management rules for Deriv synthetic indices: the 1–2% rule, position sizing, stop loss placement, daily loss limits and how to survive losing streaks.">
+    <meta name="keywords" content="risk management trading, deriv risk management, lot size calculator, stop loss, synthetic indices risk">
+    <meta name="author" content="Waseem Badami">
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    <link rel="canonical" href="https://tradewithbadami.com/blog/risk-management-synthetic-indices.html">
+    <meta name="theme-color" content="#033428">
+
+    <!-- Open Graph / Social -->
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Trade With Badami">
+    <meta property="og:title" content="Risk Management for Deriv Synthetic Indices — Lot Size, Stop Loss &amp; Rules">
+    <meta property="og:description" content="Simple risk management rules for Deriv synthetic indices: the 1–2% rule, position sizing, stop loss placement, daily loss limits and how to survive losing streaks.">
+    <meta property="og:url" content="https://tradewithbadami.com/blog/risk-management-synthetic-indices.html">
+    <meta property="og:image" content="https://tradewithbadami.com/assets/images/blog/risk-management-synthetic-indices.webp">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:locale" content="en_US">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Risk Management for Deriv Synthetic Indices — Lot Size, Stop Loss &amp; Rules">
+    <meta name="twitter:description" content="Simple risk management rules for Deriv synthetic indices: the 1–2% rule, position sizing, stop loss placement, daily loss limits and how to survive losing streaks.">
+    <meta name="twitter:image" content="https://tradewithbadami.com/assets/images/blog/risk-management-synthetic-indices.webp">
+    <meta property="article:published_time" content="2026-08-22T09:00:00+05:00">
+    <meta property="article:author" content="Waseem Badami">
+    <meta property="article:section" content="Risk Management">
+
+    <!-- Icons -->
+    <link rel="icon" href="../assets/images/brand/favicon.svg" type="image/svg+xml">
+    <link rel="icon" href="../assets/images/brand/favicon-32.png" sizes="32x32" type="image/png">
+    <link rel="apple-touch-icon" href="../assets/images/brand/apple-touch-icon.png">
+    <link rel="manifest" href="../site.webmanifest">
+
+    <!-- Fonts & vendor CSS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Moderustic:wght@600;700;800&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" referrerpolicy="no-referrer">
+
+    <!-- Site CSS (single merged file) -->
+    <link rel="stylesheet" href="../assets/css/style.css">
+
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Risk Management for Synthetic Indices: Rules That Protect Your Account","description":"Simple risk management rules for Deriv synthetic indices: the 1–2% rule, position sizing, stop loss placement, daily loss limits and how to survive losing streaks.","image":"https://tradewithbadami.com/assets/images/blog/risk-management-synthetic-indices.webp","datePublished":"2026-08-22","dateModified":"2026-08-22","author":{"@type":"Person","name":"Waseem Badami","url":"https://tradewithbadami.com/about.html"},"publisher":{"@type":"Organization","name":"Trade With Badami","logo":{"@type":"ImageObject","url":"https://tradewithbadami.com/assets/images/brand/logo.png"}},"mainEntityOfPage":{"@type":"WebPage","@id":"https://tradewithbadami.com/blog/risk-management-synthetic-indices.html"},"articleSection":"Risk Management","keywords":"risk management trading, deriv risk management, lot size calculator, stop loss, synthetic indices risk","inLanguage":"en","timeRequired":"PT8M"}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://tradewithbadami.com/"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://tradewithbadami.com/blog.html"},{"@type":"ListItem","position":3,"name":"Risk Management for Synthetic Indices: Rules That Protect Your Account","item":"https://tradewithbadami.com/blog/risk-management-synthetic-indices.html"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What lot size should I use on a $100 account?","acceptedAnswer":{"@type":"Answer","text":"It depends on your stop distance and the instrument. Decide your risk (for example 1% = $1), place the stop at a logical level, then pick the volume where a stop-loss hit equals that amount — often the minimum lot on small accounts."}},{"@type":"Question","name":"Is 5% risk per trade too much?","acceptedAnswer":{"@type":"Answer","text":"For most traders, yes. A normal losing streak at 5% risk can cut an account by a quarter or more. Keeping risk at 1–2% gives you room to learn."}},{"@type":"Question","name":"Should I move my stop loss if price comes close?","acceptedAnswer":{"@type":"Answer","text":"Moving a stop further away to avoid a loss usually turns small losses into big ones. Only move a stop in the direction of profit, following your plan."}}]}</script>
+</head>
+<body data-page="blog">
+    <div class="reading-progress" aria-hidden="true"></div>
+
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <!-- Top bar -->
+    <div class="topbar d-none d-lg-block">
+        <div class="container d-flex justify-content-between align-items-center">
+            <div>
+                <span class="topbar-item"><i class="fa-regular fa-envelope" aria-hidden="true"></i><a href="mailto:waseembadami90@gmail.com">waseembadami90@gmail.com</a></span>
+                <span class="topbar-item"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i><a href="https://wa.me/923292310003" target="_blank" rel="noopener">+92 329 2310003</a></span>
+                <span class="topbar-item"><i class="fa-regular fa-calendar-check" aria-hidden="true"></i>Free monthly batch — enrolment open</span>
+            </div>
+            <div class="topbar-social">
+                <a href="https://www.facebook.com/waseem.sayer/" target="_blank" rel="noopener" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="https://www.instagram.com/badamisports/" target="_blank" rel="noopener" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                <a href="https://www.tiktok.com/@waseembadami90" target="_blank" rel="noopener" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+                <a href="https://whatsapp.com/channel/0029Vb17CrpICVfdQfF4rf3N" target="_blank" rel="noopener" aria-label="WhatsApp Channel"><i class="fa-brands fa-whatsapp"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="site-header">
+        <nav class="navbar navbar-expand-lg" aria-label="Main navigation">
+            <div class="container">
+                <a class="brand-logo" href="../index.html" aria-label="Trade With Badami — home">
+                                        <span>Trade <em>With</em> Badami</span>
+                </a>
+                <ul class="navbar-nav main-nav mx-auto d-none d-lg-flex">
+                    <li class="nav-item"><a class="nav-link" data-nav="home" href="../index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" data-nav="about" href="../about.html">About</a></li>
+                    <li class="nav-item"><a class="nav-link" data-nav="services" href="../services.html">Services</a></li>
+                    <li class="nav-item"><a class="nav-link" data-nav="results" href="../results.html">Signal Results</a></li>
+                    <li class="nav-item"><a class="nav-link" data-nav="moments" href="../moments.html">Moments</a></li>
+                    <li class="nav-item"><a class="nav-link" data-nav="blog" href="../blog.html">Blog</a></li>
+                    <li class="nav-item"><a class="nav-link" data-nav="contact" href="../contact.html">Contact</a></li>
+                </ul>
+                <div class="header-actions">
+                    <a class="header-wa d-none d-xxl-inline-flex" href="https://wa.me/923292310003" target="_blank" rel="noopener">
+                        <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
+                        <span><small>WhatsApp</small>+92 329 2310003</span>
+                    </a>
+                    <button class="menu-toggle d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu" aria-controls="mobileMenu" aria-label="Open menu">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Mobile menu -->
+    <div class="offcanvas offcanvas-end mobile-menu" tabindex="-1" id="mobileMenu" aria-labelledby="mobileMenuLabel">
+        <div class="offcanvas-header">
+            <a class="brand-logo" href="../index.html" id="mobileMenuLabel">
+                <span>Trade <em>With</em> Badami</span>
+            </a>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close menu"></button>
+        </div>
+        <div class="offcanvas-body">
+            <ul class="mobile-nav">
+                <li><a data-nav="home" href="../index.html">Home <i class="fa-solid fa-chevron-right" aria-hidden="true"></i></a></li>
+                <li><a data-nav="about" href="../about.html">About <i class="fa-solid fa-chevron-right" aria-hidden="true"></i></a></li>
+                <li><a data-nav="services" href="../services.html">Services <i class="fa-solid fa-chevron-right" aria-hidden="true"></i></a></li>
+                <li><a data-nav="results" href="../results.html">Signal Results <i class="fa-solid fa-chevron-right" aria-hidden="true"></i></a></li>
+                <li><a data-nav="moments" href="../moments.html">Moments <i class="fa-solid fa-chevron-right" aria-hidden="true"></i></a></li>
+                <li><a data-nav="blog" href="../blog.html">Blog <i class="fa-solid fa-chevron-right" aria-hidden="true"></i></a></li>
+                <li><a data-nav="contact" href="../contact.html">Contact <i class="fa-solid fa-chevron-right" aria-hidden="true"></i></a></li>
+            </ul>
+            <a class="btn-main w-100 mb-4" href="https://wa.me/923292310003?text=Assalam%20o%20Alaikum%20Waseem%2C%20I%20want%20to%20join%20the%20free%20batch%20and%20signal%20group." target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp"></i> Join Free Signal Group</a>
+            <div class="mobile-menu-contact">
+                <a href="https://wa.me/923292310003" target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp"></i>+92 329 2310003</a>
+                <a href="mailto:waseembadami90@gmail.com"><i class="fa-regular fa-envelope"></i>waseembadami90@gmail.com</a>
+                <div class="social-links mt-3">
+                    <a href="https://www.facebook.com/waseem.sayer/" target="_blank" rel="noopener" aria-label="Facebook" style="background:var(--bg);color:var(--ink)"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="https://www.instagram.com/badamisports/" target="_blank" rel="noopener" aria-label="Instagram" style="background:var(--bg);color:var(--ink)"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="https://www.tiktok.com/@waseembadami90" target="_blank" rel="noopener" aria-label="TikTok" style="background:var(--bg);color:var(--ink)"><i class="fa-brands fa-tiktok"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main id="main">
+
+        <section class="page-header article-header grid-pattern-dark">
+            <div class="container">
+                <a class="badge-pill" href="../blog.html?category=risk-management">Risk Management</a>
+                <h1>Risk Management for Synthetic Indices: Rules That Protect Your Account</h1>
+                <div class="blog-meta mb-3">
+                    <span><i class="fa-regular fa-user" aria-hidden="true"></i>By Waseem Badami</span>
+                    <span><i class="fa-regular fa-calendar" aria-hidden="true"></i><time datetime="2026-08-22">Aug 22, 2026</time></span>
+                    <span><i class="fa-regular fa-clock" aria-hidden="true"></i>8 min read</span>
+                </div>
+                <nav aria-label="breadcrumb"><ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="../index.html">Home</a></li>
+                    <li class="breadcrumb-item"><a href="../blog.html">Blog</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Risk Management</li>
+                </ol></nav>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <div class="row g-4 g-lg-5">
+                    <div class="col-lg-8">
+                        <article>
+                            <figure class="article-cover">
+                                <img src="../assets/images/blog/risk-management-synthetic-indices.webp" alt="Risk Management for Synthetic Indices: Rules That Protect Your Account" width="1200" height="630" fetchpriority="high">
+                            </figure>
+                            <div class="article-content">
+                                <nav class="toc" aria-label="Table of contents">
+                                    <h2>In this article</h2>
+                                    <ol id="tocList"></ol>
+                                </nav>
+
+<p>Every trader loses. The traders who last are not the ones who never lose — they are the ones whose losses are small and planned. On fast markets like Deriv's synthetic indices, risk management is not a nice extra. It is the whole game.</p>
+
+<h2>Rule 1: Risk 1–2% per trade</h2>
+<p>Decide the maximum percentage of your balance you will lose if a trade hits its stop loss. We recommend <strong>1% for beginners</strong> and never more than 2%.</p>
+<p>On a $200 account, 1% is $2. That feels small — and that is the point. With 1% risk, ten losses in a row still leave you with about 90% of your account. With 10% risk, the same streak can leave you with around a third.</p>
+
+<h2>Rule 2: Size the position from the stop loss</h2>
+<p>Most beginners choose a lot size first and then place the stop wherever it fits. Reverse it:</p>
+<ol>
+<li>Find the logical stop-loss level on the chart (beyond support, resistance or the last swing).</li>
+<li>Measure the distance from entry to stop.</li>
+<li>Calculate the lot size so that distance equals your fixed risk in dollars.</li>
+</ol>
+<p>In MT5 you can check how much a price move is worth for a given volume in the symbol's Specification, or simply place the trade on demo with your planned stop and read the potential loss. Our <a href="../index.html#calculator">risk calculator</a> shows your dollar risk and target instantly.</p>
+
+<h2>Rule 3: Always use a stop loss</h2>
+<p>Synthetic indices can move a long way in seconds, and Boom and Crash spikes can be violent. A trade without a stop loss is a trade with unlimited downside. Place the stop when you open the trade, not "later".</p>
+
+<h2>Rule 4: Aim for a reward at least as big as the risk</h2>
+<p>A risk-to-reward ratio of 1:2 means you aim to make $2 for every $1 risked. With 1:2, you can be right on only 40% of trades and still grow the account over time — before costs. Do not move your target closer just to "lock something in" while leaving the stop far away.</p>
+
+<h2>Rule 5: Set a daily loss limit</h2>
+<p>Pick a limit — for example, three losing trades or 3% of the balance in a day — and stop trading when you hit it. Most account blow-ups do not come from one bad trade; they come from revenge trading after a bad trade.</p>
+
+<h2>Rule 6: Plan for losing streaks</h2>
+<p>Even a good strategy can lose five or six times in a row. Ask yourself before every session: "If I lose my next six trades, how much will my account be down?" If the answer scares you, your risk is too high.</p>
+<div class="callout is-warning"><strong>Avoid martingale</strong>Doubling your lot after every loss to "recover" may work for a while, but one long losing streak can wipe out the account. We never teach martingale in our batches.</div>
+
+<h2>A simple pre-trade checklist</h2>
+<ul>
+<li>Is this setup in my written plan?</li>
+<li>Where is my stop loss, and why there?</li>
+<li>Is my lot size calculated from 1–2% risk?</li>
+<li>Is my target at least 1:1.5 or 1:2?</li>
+<li>Have I hit my daily loss limit?</li>
+</ul>
+<p>Write the answers in your <a href="trading-journal-improve-results.html">trading journal</a>. Over a month, the journal will show you exactly where your money goes.</p>
+
+                                <aside class="takeaways">
+                                    <h2>Key Takeaways</h2>
+                                    <ul class="check-list"><li>Risk 1% per trade as a beginner and never more than 2%.</li><li>Find the stop first, then calculate the lot size.</li><li>Every trade needs a stop loss from the moment it is opened.</li><li>Use a daily loss limit to stop revenge trading.</li></ul>
+                                </aside>
+
+                                <h2>Frequently Asked Questions</h2>
+                                <div class="accordion faq-accordion" id="postFaq">
+                    <div class="accordion-item">
+                        <h3 class="accordion-header m-0">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#postFaq-0" aria-expanded="true" aria-controls="postFaq-0">What lot size should I use on a $100 account?</button>
+                        </h3>
+                        <div id="postFaq-0" class="accordion-collapse collapse show" data-bs-parent="#postFaq">
+                            <div class="accordion-body">It depends on your stop distance and the instrument. Decide your risk (for example 1% = $1), place the stop at a logical level, then pick the volume where a stop-loss hit equals that amount — often the minimum lot on small accounts.</div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h3 class="accordion-header m-0">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#postFaq-1" aria-expanded="false" aria-controls="postFaq-1">Is 5% risk per trade too much?</button>
+                        </h3>
+                        <div id="postFaq-1" class="accordion-collapse collapse" data-bs-parent="#postFaq">
+                            <div class="accordion-body">For most traders, yes. A normal losing streak at 5% risk can cut an account by a quarter or more. Keeping risk at 1–2% gives you room to learn.</div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h3 class="accordion-header m-0">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#postFaq-2" aria-expanded="false" aria-controls="postFaq-2">Should I move my stop loss if price comes close?</button>
+                        </h3>
+                        <div id="postFaq-2" class="accordion-collapse collapse" data-bs-parent="#postFaq">
+                            <div class="accordion-body">Moving a stop further away to avoid a loss usually turns small losses into big ones. Only move a stop in the direction of profit, following your plan.</div>
+                        </div>
+                    </div>
+                </div>
+
+                                <div class="callout mt-5">
+                                    <strong>Learn this live — for free</strong>
+                                    Join Waseem's free monthly batch and practise with the free signal group. <a href="https://wa.me/923292310003?text=Assalam%20o%20Alaikum%20Waseem%2C%20I%20want%20to%20join%20the%20free%20batch%20and%20signal%20group." target="_blank" rel="noopener">Message on WhatsApp</a> to reserve your seat.
+                                </div>
+                                <p class="small text-muted">Risk warning: trading derivatives carries a high level of risk. This article is for educational purposes only and is not financial advice.</p>
+                            </div>
+
+                            <div class="article-share">
+                                <strong>Share:</strong>
+                                <a class="share-btn" href="https://wa.me/?text=Risk%20Management%20for%20Synthetic%20Indices:%20Rules%20That%20Protect%20Your%20Account%20https://tradewithbadami.com/blog/risk-management-synthetic-indices.html" target="_blank" rel="noopener" aria-label="Share on WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+                                <a class="share-btn" href="https://www.facebook.com/sharer/sharer.php?u=https://tradewithbadami.com/blog/risk-management-synthetic-indices.html" target="_blank" rel="noopener" aria-label="Share on Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                                <a class="share-btn" href="https://twitter.com/intent/tweet?url=https://tradewithbadami.com/blog/risk-management-synthetic-indices.html&amp;text=Risk%20Management%20for%20Synthetic%20Indices:%20Rules%20That%20Protect%20Your%20Account" target="_blank" rel="noopener" aria-label="Share on X"><i class="fa-brands fa-x-twitter"></i></a>
+                                <a class="share-btn" href="https://www.linkedin.com/sharing/share-offsite/?url=https://tradewithbadami.com/blog/risk-management-synthetic-indices.html" target="_blank" rel="noopener" aria-label="Share on LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+                                <button class="share-btn" type="button" data-copy-link aria-label="Copy link"><i class="fa-solid fa-link"></i></button>
+                            </div>
+
+                            <div class="author-box">
+                                <img src="../assets/images/waseem/waseem-badami.webp" alt="Waseem Badami" width="90" height="90" loading="lazy">
+                                <div>
+                                    <h3>Waseem Badami</h3>
+                                    <span class="role">Trader since 2017 · Deriv Broker Partner · Co-founder, Saim Forex Academy</span>
+                                    <p>Waseem teaches practical trading through free monthly batches and runs a free signal group focused on Deriv synthetic indices, gold and forex.</p>
+                                    <a class="link-arrow" href="../about.html">More about Waseem <i class="fa-solid fa-arrow-right"></i></a>
+                                </div>
+                            </div>
+                            <nav class="post-nav" aria-label="More articles"><a class="prev" href="how-to-follow-trading-signals.html"><span><i class="fa-solid fa-arrow-left"></i> Previous</span><strong>How to Follow Trading Signals Without Blowing Your Account</strong></a><a class="next" href="deriv-platforms-compared.html"><span>Next <i class="fa-solid fa-arrow-right"></i></span><strong>Deriv Platforms Compared: MT5, cTrader, Deriv Trader and Deriv Bot</strong></a></nav>
+                        </article>
+                    </div>
+
+                    <div class="col-lg-4">
+                        <aside class="sidebar">
+                            <div class="widget">
+                                <h2 class="widget-title">Search Articles</h2>
+                                <form class="search-box" action="../blog.html" method="get" role="search">
+                                    <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+                                    <label for="sidebarSearch" class="visually-hidden">Search</label>
+                                    <input class="form-control" type="search" id="sidebarSearch" name="q" placeholder="Search...">
+                                </form>
+                            </div>
+                            <div class="widget">
+                                <h2 class="widget-title">Recent Posts</h2>
+                            <div class="recent-post">
+                                <img src="../assets/images/blog/what-is-deriv-beginners-guide.webp" alt="" width="76" height="56" loading="lazy">
+                                <div><a href="what-is-deriv-beginners-guide.html">What Is Deriv? A Complete Beginner&#x27;s Guide to the Broker</a><small>Sep 28, 2026</small></div>
+                            </div>
+                            <div class="recent-post">
+                                <img src="../assets/images/blog/how-to-open-deriv-account.webp" alt="" width="76" height="56" loading="lazy">
+                                <div><a href="how-to-open-deriv-account.html">How to Open and Verify a Deriv Account: Step-by-Step Guide</a><small>Sep 22, 2026</small></div>
+                            </div>
+                            <div class="recent-post">
+                                <img src="../assets/images/blog/boom-and-crash-indices-explained.webp" alt="" width="76" height="56" loading="lazy">
+                                <div><a href="boom-and-crash-indices-explained.html">Boom and Crash Indices Explained: How Spikes Really Work</a><small>Sep 15, 2026</small></div>
+                            </div>
+                            <div class="recent-post">
+                                <img src="../assets/images/blog/volatility-indices-explained.webp" alt="" width="76" height="56" loading="lazy">
+                                <div><a href="volatility-indices-explained.html">Volatility Indices on Deriv: V10, V25, V75 and V100 Explained</a><small>Sep 08, 2026</small></div>
+                            </div>
+                            </div>
+                            <div class="widget">
+                                <h2 class="widget-title">Categories</h2>
+                                <ul class="cat-list"><li><a href="../blog.html?category=deriv-basics">Deriv Basics <span>(2)</span></a></li><li><a href="../blog.html?category=synthetic-indices">Synthetic Indices <span>(2)</span></a></li><li><a href="../blog.html?category=risk-management">Risk Management <span>(1)</span></a></li><li><a href="../blog.html?category=strategy">Trading Strategy <span>(3)</span></a></li><li><a href="../blog.html?category=platforms">Platforms <span>(2)</span></a></li></ul>
+                            </div>
+                            <div class="widget widget-cta">
+                                <span class="icon-box"><i class="fa-brands fa-whatsapp"></i></span>
+                                <h3>Join the Free Signal Group</h3>
+                                <p>Get free signals and live lessons in the next monthly batch.</p>
+                                <a class="btn-main w-100" href="https://wa.me/923292310003?text=Assalam%20o%20Alaikum%20Waseem%2C%20I%20want%20to%20join%20the%20free%20batch%20and%20signal%20group." target="_blank" rel="noopener">Join on WhatsApp</a>
+                            </div>
+                        </aside>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section bg-soft">
+            <div class="container">
+                <div class="section-title text-center reveal">
+                    <span class="badge-pill">Keep Reading</span>
+                    <h2>Related Articles</h2>
+                </div>
+                <div class="row g-4">
+                <article class="col-md-6 col-lg-4 blog-item " data-category="deriv-basics" data-search="what is deriv? a complete beginner&#x27;s guide to the broker a clear introduction to deriv: the markets it offers, how synthetic indices differ from forex, the main platforms and the first steps every beginner should take. what is deriv, deriv broker, deriv for beginners, deriv synthetic indices, deriv pakistan">
+                    <div class="blog-card reveal">
+                        <a class="blog-thumb" href="../blog/what-is-deriv-beginners-guide.html" tabindex="-1" aria-hidden="true">
+                            <img src="../assets/images/blog/what-is-deriv-beginners-guide.webp" alt="What Is Deriv? A Complete Beginner&#x27;s Guide to the Broker" width="1200" height="630" loading="lazy">
+                        </a>
+                        <div class="blog-body">
+                            <span class="blog-cat">Deriv Basics</span>
+                            <div class="blog-meta">
+                                <span><i class="fa-regular fa-calendar" aria-hidden="true"></i><time datetime="2026-09-28">Sep 28, 2026</time></span>
+                                <span><i class="fa-regular fa-clock" aria-hidden="true"></i>8 min read</span>
+                            </div>
+                            <h3><a href="../blog/what-is-deriv-beginners-guide.html">What Is Deriv? A Complete Beginner&#x27;s Guide to the Broker</a></h3>
+                            <p>A clear introduction to Deriv: the markets it offers, how synthetic indices differ from forex, the main platforms and the first steps every beginner should take.</p>
+                            <a class="link-arrow" href="../blog/what-is-deriv-beginners-guide.html" aria-label="Read: What Is Deriv? A Complete Beginner&#x27;s Guide to the Broker">Read Article <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+                        </div>
+                    </div>
+                </article>
+                <article class="col-md-6 col-lg-4 blog-item " data-category="deriv-basics" data-search="how to open and verify a deriv account: step-by-step guide from sign-up to verification and your first mt5 account — every step explained, plus the mistakes that cause delays when you want to withdraw. open deriv account, deriv sign up, deriv verification, deriv mt5 account, deriv account pakistan">
+                    <div class="blog-card reveal">
+                        <a class="blog-thumb" href="../blog/how-to-open-deriv-account.html" tabindex="-1" aria-hidden="true">
+                            <img src="../assets/images/blog/how-to-open-deriv-account.webp" alt="How to Open and Verify a Deriv Account: Step-by-Step Guide" width="1200" height="630" loading="lazy">
+                        </a>
+                        <div class="blog-body">
+                            <span class="blog-cat">Deriv Basics</span>
+                            <div class="blog-meta">
+                                <span><i class="fa-regular fa-calendar" aria-hidden="true"></i><time datetime="2026-09-22">Sep 22, 2026</time></span>
+                                <span><i class="fa-regular fa-clock" aria-hidden="true"></i>7 min read</span>
+                            </div>
+                            <h3><a href="../blog/how-to-open-deriv-account.html">How to Open and Verify a Deriv Account: Step-by-Step Guide</a></h3>
+                            <p>From sign-up to verification and your first MT5 account — every step explained, plus the mistakes that cause delays when you want to withdraw.</p>
+                            <a class="link-arrow" href="../blog/how-to-open-deriv-account.html" aria-label="Read: How to Open and Verify a Deriv Account: Step-by-Step Guide">Read Article <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+                        </div>
+                    </div>
+                </article>
+                <article class="col-md-6 col-lg-4 blog-item " data-category="synthetic-indices" data-search="boom and crash indices explained: how spikes really work what the numbers in boom 1000 and crash 500 actually mean, why spikes cannot be predicted tick by tick, and the risk rules that keep you in the game. boom and crash, boom 1000, crash 1000, boom 500, crash 500, deriv spikes, boom crash strategy">
+                    <div class="blog-card reveal">
+                        <a class="blog-thumb" href="../blog/boom-and-crash-indices-explained.html" tabindex="-1" aria-hidden="true">
+                            <img src="../assets/images/blog/boom-and-crash-indices-explained.webp" alt="Boom and Crash Indices Explained: How Spikes Really Work" width="1200" height="630" loading="lazy">
+                        </a>
+                        <div class="blog-body">
+                            <span class="blog-cat">Synthetic Indices</span>
+                            <div class="blog-meta">
+                                <span><i class="fa-regular fa-calendar" aria-hidden="true"></i><time datetime="2026-09-15">Sep 15, 2026</time></span>
+                                <span><i class="fa-regular fa-clock" aria-hidden="true"></i>8 min read</span>
+                            </div>
+                            <h3><a href="../blog/boom-and-crash-indices-explained.html">Boom and Crash Indices Explained: How Spikes Really Work</a></h3>
+                            <p>What the numbers in Boom 1000 and Crash 500 actually mean, why spikes cannot be predicted tick by tick, and the risk rules that keep you in the game.</p>
+                            <a class="link-arrow" href="../blog/boom-and-crash-indices-explained.html" aria-label="Read: Boom and Crash Indices Explained: How Spikes Really Work">Read Article <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+                        </div>
+                    </div>
+                </article>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row g-4 g-lg-5">
+                <div class="col-lg-4 col-md-6">
+                    <a class="brand-logo mb-4" href="../index.html"><span>Trade <em>With</em> Badami</span></a>
+                    <p class="mt-3">Waseem Badami is a professional trader since 2017, Deriv broker partner and co-founder of Saim Forex Academy — teaching practical trading through free monthly batches and a free signal group.</p>
+                    <div class="social-links mt-4">
+                        <a href="https://wa.me/923292310003" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+                        <a href="https://www.facebook.com/waseem.sayer/" target="_blank" rel="noopener" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="https://www.instagram.com/badamisports/" target="_blank" rel="noopener" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="https://www.tiktok.com/@waseembadami90" target="_blank" rel="noopener" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6 col-6">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="../index.html">Home</a></li>
+                        <li><a href="../about.html">About Waseem</a></li>
+                        <li><a href="../services.html">Services</a></li>
+                        <li><a href="../results.html">Signal Results</a></li>
+                        <li><a href="../moments.html">Special Moments</a></li>
+                        <li><a href="../blog.html">Blog</a></li>
+                        <li><a href="../contact.html">Contact</a></li>
+                        <li><a href="https://t.deriv.link?t=VQLH73WYR4HD" target="_blank" rel="noopener sponsored">Open Deriv Account</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6 col-6">
+                    <h3>Learn</h3>
+                    <ul class="footer-links">
+                        <li><a href="../blog/what-is-deriv-beginners-guide.html">What Is Deriv?</a></li>
+                        <li><a href="../blog/boom-and-crash-indices-explained.html">Boom &amp; Crash Explained</a></li>
+                        <li><a href="../blog/volatility-indices-explained.html">Volatility Indices</a></li>
+                        <li><a href="../blog/risk-management-synthetic-indices.html">Risk Management</a></li>
+                        <li><a href="../blog/deriv-mt5-setup-guide.html">Deriv MT5 Setup</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h3>Get in Touch</h3>
+                    <ul class="footer-contact">
+                        <li><i class="fa-brands fa-whatsapp" aria-hidden="true"></i><a href="https://wa.me/923292310003" target="_blank" rel="noopener">+92 329 2310003</a></li>
+                        <li><i class="fa-regular fa-envelope" aria-hidden="true"></i><a href="mailto:waseembadami90@gmail.com">waseembadami90@gmail.com</a></li>
+                        <li><i class="fa-solid fa-bullhorn" aria-hidden="true"></i><a href="https://whatsapp.com/channel/0029Vb17CrpICVfdQfF4rf3N" target="_blank" rel="noopener">Follow the WhatsApp Channel</a></li>
+                    </ul>
+                    <a class="btn-main btn-sm mt-2" href="https://wa.me/923292310003?text=Assalam%20o%20Alaikum%20Waseem%2C%20I%20want%20to%20join%20the%20free%20batch%20and%20signal%20group." target="_blank" rel="noopener">Join Free Batch <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+                </div>
+            </div>
+            <div class="risk-warning">
+                <strong>Risk warning:</strong> Trading forex, CFDs and synthetic indices involves a high level of risk and may not be suitable for everyone. You can lose some or all of your capital. Signals, results and articles on this website are for educational purposes only and are not financial advice. Past performance does not guarantee future results. Only trade with money you can afford to lose.
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container d-flex flex-column flex-md-row justify-content-between gap-2">
+                <p>&copy; <span data-year>2026</span> Trade With Badami. All rights reserved.</p>
+                <p>Waseem Badami — Deriv Broker Partner &amp; Trading Educator</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating WhatsApp -->
+    <a class="whatsapp-float" href="https://wa.me/923292310003?text=Assalam%20o%20Alaikum%20Waseem%2C%20I%20want%20to%20join%20the%20free%20batch%20and%20signal%20group." target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+        <i class="fa-brands fa-whatsapp" aria-hidden="true"></i><span>WhatsApp</span>
+    </a>
+    <button class="back-to-top" type="button" aria-label="Back to top"><i class="fa-solid fa-arrow-up"></i></button>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous" defer></script>
+    <script src="../assets/js/main.js" defer></script>
+</body>
+</html>
