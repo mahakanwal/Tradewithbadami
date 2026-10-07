@@ -47,7 +47,7 @@ Put Waseem's introduction video at `assets/videos/about_video.mp4` (MP4, H.264, 
 The "Hear It From Waseem Badami" section on about.html appears automatically once the file is there.
 
 ## 4. Deriv partner link
-Already set everywhere: https://t.deriv.link?t=VQLH73WYR4HD
+Already set everywhere: https://t.deriv.link?t=BNT5QWRR7UCY
 
 ## 5. SEO
 - Domain is set to https://tradewithbadami.com (canonical, sitemap, Open Graph, schema).
