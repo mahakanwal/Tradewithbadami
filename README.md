@@ -2,6 +2,9 @@
 
 Static website (HTML + Bootstrap 5 + one CSS + one JS). Upload the whole folder to your hosting root (public_html).
 
+> **Blog is now dynamic** (articles live in Supabase, written from `admin.html`). Setup steps: see **SETUP-BLOG.md**.
+> `blog/*.html` are now tiny redirect pages; articles are served by `post.html?slug=...`.
+
 ## Folder structure
 ```
 index.html, about.html, services.html, results.html, moments.html, blog.html, contact.html, 404.html

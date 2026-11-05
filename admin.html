@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Blog Admin | Trade With Badami</title>
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="theme-color" content="#033428">
+    <link rel="icon" href="assets/images/brand/favicon.svg" type="image/svg+xml">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Moderustic:wght@600;700;800&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" referrerpolicy="no-referrer">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.snow.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+
+    <style>
+        body { background: var(--bg); min-height: 100vh; }
+        .adm-bar { background: var(--dark); color: #fff; padding: 14px 0; position: sticky; top: 0; z-index: 50; }
+        .adm-bar .container { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+        .adm-brand { font-family: var(--font-head); font-weight: 700; font-size: 20px; color: #fff; }
+        .adm-brand em { color: var(--primary); font-style: normal; }
+        .adm-bar .adm-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+        .adm-wrap { padding: 36px 0 80px; }
+        .adm-card { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; margin-bottom: 24px; }
+        .adm-card h2, .adm-card h3 { font-size: 19px; margin-bottom: 18px; }
+        .adm-login { max-width: 440px; margin: 9vh auto 0; }
+        .adm-login .adm-brand { color: var(--ink); display: block; text-align: center; font-size: 26px; margin-bottom: 8px; }
+        .adm-login .adm-brand em { color: var(--dark-3); }
+        .adm-btn { display: inline-flex; align-items: center; gap: 8px; border-radius: 50px; padding: 10px 22px; font-weight: 600; font-size: 15px; border: 2px solid transparent; cursor: pointer; transition: all .2s; line-height: 1.2; }
+        .adm-btn[disabled] { opacity: .6; cursor: not-allowed; }
+        .adm-btn.primary { background: var(--primary); color: var(--ink); border-color: var(--primary); }
+        .adm-btn.primary:hover:not([disabled]) { background: var(--primary-dark); border-color: var(--primary-dark); }
+        .adm-btn.ghost { background: transparent; color: #fff; border-color: rgba(255,255,255,.35); }
+        .adm-btn.ghost:hover { border-color: #fff; }
+        .adm-btn.outline { background: #fff; color: var(--ink); border-color: var(--border); }
+        .adm-btn.outline:hover { border-color: var(--ink); }
+        .adm-btn.danger { background: #fff; color: var(--danger); border-color: #f4c7c9; }
+        .adm-btn.danger:hover { background: var(--danger); color: #fff; }
+        .adm-btn.sm { padding: 6px 14px; font-size: 13.5px; }
+        .adm-label { font-weight: 600; font-size: 14px; color: var(--ink); margin-bottom: 6px; display: block; }
+        .adm-hint { font-size: 13px; color: var(--body); margin-top: 5px; }
+        .adm-table { width: 100%; border-collapse: collapse; }
+        .adm-table th { text-align: left; font-size: 12.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--body); padding: 10px 12px; border-bottom: 2px solid var(--bg); }
+        .adm-table td { padding: 14px 12px; border-bottom: 1px solid var(--border); vertical-align: middle; font-size: 15px; }
+        .adm-table td.title { font-weight: 600; color: var(--ink); max-width: 420px; }
+        .adm-table td.title small { display: block; font-weight: 400; color: var(--body); margin-top: 2px; }
+        .adm-table .acts { white-space: nowrap; text-align: right; }
+        .adm-pill { display: inline-block; font-size: 12px; font-weight: 700; padding: 3px 11px; border-radius: 50px; }
+        .adm-pill.pub { background: rgba(var(--primary-rgb), .35); color: var(--dark); }
+        .adm-pill.draft { background: #eef0ec; color: var(--body); }
+        .adm-pill.sched { background: #fdf3d6; color: #8a6200; }
+        .adm-error { background: #fdecec; color: #a42b30; border-radius: 10px; padding: 11px 14px; font-size: 14.5px; margin-bottom: 16px; display: none; }
+        .adm-error.show { display: block; }
+        .adm-tabs { display: inline-flex; background: var(--bg); border-radius: 50px; padding: 4px; margin-bottom: 10px; }
+        .adm-tabs button { border: 0; background: transparent; padding: 6px 18px; border-radius: 50px; font-weight: 600; font-size: 14px; color: var(--body); }
+        .adm-tabs button.on { background: var(--dark); color: #fff; }
+        .adm-snippets { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
+        #htmlEditor { width: 100%; min-height: 520px; font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 13.5px; line-height: 1.55; border: 1px solid var(--border); border-radius: 10px; padding: 14px; }
+        .ql-toolbar.ql-snow { border-radius: 10px 10px 0 0; border-color: var(--border); background: #fafbf8; }
+        .ql-container.ql-snow { border-radius: 0 0 10px 10px; border-color: var(--border); font-family: var(--font-body); font-size: 17px; }
+        #visualEditor .ql-editor { min-height: 520px; line-height: 1.75; }
+        #visualEditor .ql-editor img { max-width: 100%; border-radius: 10px; }
+        .cover-box { border: 2px dashed var(--border); border-radius: 12px; padding: 12px; text-align: center; background: #fafbf8; }
+        .cover-box img { width: 100%; border-radius: 8px; display: block; margin-bottom: 10px; aspect-ratio: 1200/630; object-fit: cover; }
+        .adm-toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(30px); background: var(--ink); color: #fff; padding: 12px 22px; border-radius: 50px; font-weight: 600; font-size: 15px; opacity: 0; pointer-events: none; transition: all .3s; z-index: 200; }
+        .adm-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+        .adm-toast.err { background: var(--danger); }
+        .adm-preview { position: fixed; inset: 0; background: rgba(7,30,26,.72); z-index: 120; overflow-y: auto; padding: 30px 14px; display: none; }
+        .adm-preview.show { display: block; }
+        .adm-preview .sheet { background: #fff; max-width: 860px; margin: 0 auto; border-radius: 18px; padding: 36px 40px 50px; }
+        .adm-preview .close { float: right; }
+        .adm-preview h1 { font-size: clamp(28px, 4vw, 40px); margin: 18px 0 14px; }
+        .adm-preview .article-cover { margin-bottom: 30px; }
+        [hidden] { display: none !important; }
+        @media (max-width: 767px) { .adm-table .hide-sm { display: none; } .adm-card { padding: 20px; } .adm-preview .sheet { padding: 22px; } }
+    </style>
+</head>
+<body>
+
+    <!-- Top bar -->
+    <div class="adm-bar" id="topBar" hidden>
+        <div class="container">
+            <span class="adm-brand">Trade <em>With</em> Badami · Blog Admin</span>
+            <div class="adm-actions">
+                <a class="adm-btn ghost sm" href="blog.html" target="_blank" rel="noopener"><i class="fa-solid fa-arrow-up-right-from-square"></i> View blog</a>
+                <span id="whoami" class="small" style="opacity:.8"></span>
+                <button class="adm-btn ghost sm" id="btnLogout" type="button"><i class="fa-solid fa-right-from-bracket"></i> Log out</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================== LOGIN ===================== -->
+    <section id="viewLogin" hidden>
+        <div class="container">
+            <div class="adm-login adm-card">
+                <span class="adm-brand">Trade <em>With</em> Badami</span>
+                <p class="text-center mb-4">Blog admin login</p>
+                <div class="adm-error" id="loginError"></div>
+                <form id="loginForm" autocomplete="on">
+                    <div class="mb-3">
+                        <label class="adm-label" for="loginEmail">Email</label>
+                        <input class="form-control" type="email" id="loginEmail" autocomplete="username" required>
+                    </div>
+                    <div class="mb-4">
+                        <label class="adm-label" for="loginPass">Password</label>
+                        <input class="form-control" type="password" id="loginPass" autocomplete="current-password" required>
+                    </div>
+                    <button class="adm-btn primary w-100 justify-content-center" id="btnLogin" type="submit">Log in</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================== POSTS LIST ===================== -->
+    <section id="viewList" class="adm-wrap" hidden>
+        <div class="container">
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+                <h1 style="font-size:30px;margin:0">All articles</h1>
+                <button class="adm-btn primary" id="btnNew" type="button"><i class="fa-solid fa-plus"></i> New article</button>
+            </div>
+            <div class="adm-card" style="padding:12px 18px">
+                <div style="overflow-x:auto">
+                    <table class="adm-table">
+                        <thead><tr><th>Title</th><th class="hide-sm">Category</th><th>Status</th><th class="hide-sm">Date</th><th></th></tr></thead>
+                        <tbody id="postRows"><tr><td colspan="5">Loading…</td></tr></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================== EDITOR ===================== -->
+    <section id="viewEditor" class="adm-wrap" hidden>
+        <div class="container">
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+                <div class="d-flex align-items-center gap-3">
+                    <button class="adm-btn outline sm" id="btnBack" type="button"><i class="fa-solid fa-arrow-left"></i> All articles</button>
+                    <h1 style="font-size:26px;margin:0" id="editorHeading">New article</h1>
+                </div>
+                <div class="d-flex flex-wrap gap-2">
+                    <button class="adm-btn outline" id="btnPreview" type="button"><i class="fa-regular fa-eye"></i> Preview</button>
+                    <button class="adm-btn outline" id="btnDraft" type="button"><i class="fa-regular fa-floppy-disk"></i> Save draft</button>
+                    <button class="adm-btn primary" id="btnPublish" type="button"><i class="fa-solid fa-rocket"></i> <span>Publish</span></button>
+                </div>
+            </div>
+
+            <div class="adm-error" id="editorError"></div>
+
+            <div class="row g-4">
+                <div class="col-lg-8">
+                    <div class="adm-card">
+                        <div class="mb-3">
+                            <label class="adm-label" for="fTitle">Title</label>
+                            <input class="form-control form-control-lg" id="fTitle" type="text" maxlength="160" placeholder="Article title">
+                        </div>
+                        <div class="mb-3">
+                            <label class="adm-label" for="fSlug">URL slug</label>
+                            <input class="form-control" id="fSlug" type="text" maxlength="100" placeholder="my-article-title">
+                            <div class="adm-hint" id="slugHint">Link will be: …/post.html?slug=<b>my-article-title</b></div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="adm-label" for="fExcerpt">Short summary <span class="fw-normal">(shown on the blog cards)</span></label>
+                            <textarea class="form-control" id="fExcerpt" rows="3" maxlength="320" placeholder="1–2 sentences. Leave empty to auto-create from the article."></textarea>
+                        </div>
+
+                        <label class="adm-label">Article</label>
+                        <div class="adm-tabs" role="tablist">
+                            <button type="button" id="tabVisual" class="on">Visual</button>
+                            <button type="button" id="tabHtml">HTML</button>
+                        </div>
+                        <div id="paneVisual"><div id="visualEditor"></div></div>
+                        <div id="paneHtml" hidden>
+                            <div class="adm-snippets">
+                                <button type="button" class="adm-btn outline sm" data-snippet="callout">+ Callout box</button>
+                                <button type="button" class="adm-btn outline sm" data-snippet="takeaways">+ Key takeaways</button>
+                                <button type="button" class="adm-btn outline sm" data-snippet="table">+ Table</button>
+                                <button type="button" class="adm-btn outline sm" id="btnHtmlImage">+ Image</button>
+                            </div>
+                            <textarea id="htmlEditor" spellcheck="false"></textarea>
+                            <div class="adm-hint">HTML mode keeps tables, callouts and FAQ blocks exactly as written. Switching back to Visual can remove those special blocks.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="adm-card">
+                        <h3>Publishing</h3>
+                        <div class="mb-3"><span class="adm-label">Status</span> <span id="statusPill" class="adm-pill draft">Draft</span></div>
+                        <div class="mb-3">
+                            <label class="adm-label" for="fDate">Publish date &amp; time</label>
+                            <input class="form-control" id="fDate" type="datetime-local">
+                            <div class="adm-hint">Set a future date to schedule the article. It appears on the site automatically at that time.</div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="adm-label" for="fCategory">Category</label>
+                            <select class="form-select" id="fCategory"></select>
+                        </div>
+                        <div>
+                            <label class="adm-label" for="fRead">Reading time (minutes)</label>
+                            <input class="form-control" id="fRead" type="number" min="1" max="60" value="5">
+                            <div class="adm-hint">Calculated automatically from the article length.</div>
+                        </div>
+                    </div>
+
+                    <div class="adm-card">
+                        <h3>Cover image</h3>
+                        <div class="cover-box">
+                            <img id="coverPreview" alt="" hidden>
+                            <input type="file" id="coverFile" accept="image/*" hidden>
+                            <button class="adm-btn outline sm" id="btnCover" type="button"><i class="fa-solid fa-image"></i> Upload cover</button>
+                            <button class="adm-btn danger sm" id="btnCoverRemove" type="button" hidden>Remove</button>
+                            <div class="adm-hint">Best size 1200 × 630. Large images are resized and compressed automatically.</div>
+                        </div>
+                        <div class="mt-3">
+                            <label class="adm-label" for="fCover">…or paste an image link</label>
+                            <input class="form-control" id="fCover" type="text" placeholder="https://… or /assets/images/blog/x.webp">
+                        </div>
+                    </div>
+
+                    <div class="adm-card">
+                        <h3>Search engines (SEO)</h3>
+                        <div class="mb-3">
+                            <label class="adm-label" for="fMeta">Meta description</label>
+                            <textarea class="form-control" id="fMeta" rows="3" maxlength="170" placeholder="Shown in Google results (max ~160 characters). Leave empty to use the summary."></textarea>
+                        </div>
+                        <div>
+                            <label class="adm-label" for="fKeywords">Keywords</label>
+                            <input class="form-control" id="fKeywords" type="text" placeholder="deriv, boom and crash, v75">
+                        </div>
+                    </div>
+
+                    <button class="adm-btn danger w-100 justify-content-center" id="btnDelete" type="button" hidden><i class="fa-regular fa-trash-can"></i> Delete this article</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Preview -->
+    <div class="adm-preview" id="previewBox">
+        <div class="sheet">
+            <button class="adm-btn outline sm close" id="btnClosePreview" type="button"><i class="fa-solid fa-xmark"></i> Close preview</button>
+            <span class="blog-cat" id="pvCat"></span>
+            <h1 id="pvTitle"></h1>
+            <figure class="article-cover" id="pvCoverWrap"><img id="pvCover" alt=""></figure>
+            <div class="article-content" id="pvBody"></div>
+        </div>
+    </div>
+
+    <div class="adm-toast" id="toast"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script src="assets/js/config.js"></script>
+    <script src="assets/js/admin.js"></script>
+</body>
+</html>

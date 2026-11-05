@@ -1,0 +1,31 @@
+# Keeps sitemap.xml in sync with the blog, and also pings Supabase once a day
+# (free Supabase projects pause after a week with no activity).
+name: Update sitemap
+on:
+  schedule:
+    - cron: "0 2 * * *"      # every day 02:00 UTC
+  workflow_dispatch:           # "Run workflow" button in the Actions tab
+permissions:
+  contents: write
+jobs:
+  sitemap:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Rebuild sitemap from Supabase
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+        run: node tools/generate-sitemap.mjs
+      - name: Commit if changed
+        run: |
+          if ! git diff --quiet sitemap.xml; then
+            git config user.name "github-actions"
+            git config user.email "actions@github.com"
+            git add sitemap.xml
+            git commit -m "Update sitemap"
+            git push
+          fi
