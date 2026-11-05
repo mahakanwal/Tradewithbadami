@@ -121,6 +121,14 @@
         .adm-preview .close { float: right; }
         .adm-preview h1 { font-size: clamp(28px, 4vw, 40px); margin: 18px 0 14px; }
         .adm-preview .article-cover { margin-bottom: 30px; }
+        /* Footer (hidden on login screen) */
+        .adm-footer { background: var(--dark); color: rgba(255,255,255,.72); padding: 26px 0; font-size: 14px; border-top: 3px solid var(--primary); }
+        .adm-footer .container { display: flex; align-items: center; justify-content: space-between; gap: 14px 24px; flex-wrap: wrap; }
+        .adm-footer .adm-brand { font-size: 17px; }
+        .adm-footer nav { display: flex; gap: 20px; flex-wrap: wrap; }
+        .adm-footer a { color: rgba(255,255,255,.8); text-decoration: none; transition: color .2s; }
+        .adm-footer a:hover { color: var(--primary); }
+        body:has(#topBar[hidden]) .adm-footer { display: none; }
         [hidden] { display: none !important; }
         @media (max-width: 767px) { .adm-table .hide-sm { display: none; } .adm-card { padding: 20px; } .adm-preview .sheet { padding: 22px; } }
     </style>
@@ -300,6 +308,15 @@
         </div>
     </div>
 
+    <!-- Footer -->
+    <footer class="adm-footer">
+        <div class="container">
+            <span class="adm-brand">Trade <em>With</em> Badami</span>
+            
+            <span>© <span id="ftYear"></span> Trade With Badami · Blog admin</span>
+        </div>
+    </footer>
+
     <div class="adm-toast" id="toast"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
@@ -308,6 +325,11 @@
     <script src="assets/js/config.js"></script>
     <script src="assets/js/admin.js"></script>
     <script>
+        (function () {
+            var y = document.getElementById('ftYear'); if (y) y.textContent = new Date().getFullYear();
+            var t = document.getElementById('ftTop');
+            if (t) t.addEventListener('click', function (e) { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); });
+        })();
         // Show / hide password (login screen only)
         (function () {
             var b = document.getElementById('lgEye'), p = document.getElementById('loginPass');
